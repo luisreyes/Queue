@@ -1,0 +1,186 @@
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".MainActivity"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="120dp"
+        android:id="@+id/scene"
+        android:src="@mipmap/sc_city"
+        android:layout_alignParentRight="false"
+        android:scaleType="centerCrop" />
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar_message"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:minHeight="?attr/actionBarSize"
+        android:background="@color/primary"
+        app:theme="@style/AppTheme.Toolbar.Message"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light"/>
+
+
+
+    <com.melnykov.fab.ObservableScrollView
+        android:id="@+id/scrollview_message"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/scene">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <com.rengwuxian.materialedittext.MaterialEditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/edittext_title"
+                android:hint="@string/activity_add_edit_title"
+                android:inputType="textShortMessage|textCapWords"
+                android:singleLine="true"
+                android:textCursorDrawable="@drawable/text_cursor"
+                android:paddingRight="@dimen/activity_horizontal_margin"
+                android:paddingLeft="@dimen/activity_horizontal_margin"
+                android:textSize="26sp"
+                app:baseColor="@color/primary_text"
+                app:primaryColor="@color/accent"
+                app:floatingLabelText=""
+                app:hideUnderline="false" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:paddingRight="@dimen/activity_horizontal_margin"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal">
+
+                    <com.rengwuxian.materialedittext.MaterialEditText
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/addEditDate"
+                        android:hint="@string/activity_add_edit_date"
+                        android:inputType="date"
+                        android:onClick="onPickDate"
+                        app:iconLeft="@mipmap/ic_event"
+                        app:baseColor="@color/primary_text"
+                        app:floatingLabel="highlight"
+                        app:primaryColor="@color/accent"
+
+                        android:enabled="true"
+                        android:focusable="true"
+                        android:focusableInTouchMode="false" />
+
+                    <com.rengwuxian.materialedittext.MaterialEditText
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/addEditTime"
+                        android:hint="@string/activity_add_edit_time"
+                        android:inputType="time"
+                        android:onClick="onPickTime"
+                        app:iconLeft="@mipmap/ic_query"
+                        app:baseColor="@color/primary_text"
+                        app:floatingLabel="highlight"
+                        app:primaryColor="@color/accent"
+
+                        android:focusable="true"
+                        android:focusableInTouchMode="false"
+                        android:enabled="true" />
+                </LinearLayout>
+
+                <FrameLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <com.rengwuxian.materialedittext.MaterialEditText
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/addEditPhone"
+                        android:hint="@string/activity_add_edit_phone"
+                        android:inputType="phone"
+                        android:textCursorDrawable="@drawable/text_cursor"
+                        app:iconLeft="@mipmap/ic_phone"
+                        app:baseColor="@color/primary_text"
+                        app:primaryColor="@color/accent"
+                        app:floatingLabel="highlight"/>
+
+                    <ImageButton
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:padding="13dp"
+                        android:layout_gravity="end"
+                        android:src="@mipmap/ic_person_add"
+                        android:onClick="onPickContacts"
+                        android:id="@+id/addEditIconContacts"
+                        android:background="?attr/selectableItemBackgroundBorderless"
+                        android:scaleType="fitXY" />
+
+
+
+
+                </FrameLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="@dimen/activity_horizontal_margin"
+                    android:paddingRight="0dp">
+
+                    <com.rengwuxian.materialedittext.MaterialEditText
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:minHeight="100dp"
+                        android:id="@+id/addEditMessage"
+                        android:hint="@string/activity_add_edit_message"
+                        android:inputType="textMultiLine"
+                        android:gravity="top|start"
+                        android:textCursorDrawable="@drawable/text_cursor"
+                        app:maxCharacters="160"
+                        app:floatingLabel="highlight"
+                        app:baseColor="@color/primary_text"
+                        app:primaryColor="@color/accent"
+                        app:hideUnderline="true"
+
+                        />
+                </LinearLayout>
+
+
+
+
+
+
+            </LinearLayout>
+        </LinearLayout>
+
+    </com.melnykov.fab.ObservableScrollView>
+
+
+
+    <com.melnykov.fab.FloatingActionButton
+        android:id="@+id/fab_message"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/activity_margin"
+        android:src="@mipmap/ic_done"
+        app:fab_colorNormal="@color/accent"
+        app:fab_colorPressed="@color/accent_dark"
+        app:fab_colorRipple="@color/accent_darker"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:onClick="onFabClickDone" />
+
+
+
+</RelativeLayout>
