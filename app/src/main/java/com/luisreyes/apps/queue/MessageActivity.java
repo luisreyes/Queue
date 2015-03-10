@@ -3,24 +3,31 @@ package com.luisreyes.apps.queue;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Intent;
-import android.support.v7.app.ActionBarActivity;
+import android.database.Cursor;
 import android.os.Bundle;
+import android.provider.ContactsContract;
+import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.Toolbar;
 import android.telephony.PhoneNumberFormattingTextWatcher;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.DatePicker;
+import android.widget.SimpleAdapter;
 import android.widget.TimePicker;
 
 import com.melnykov.fab.FloatingActionButton;
 import com.melnykov.fab.ObservableScrollView;
+import com.rengwuxian.materialedittext.MaterialAutoCompleteTextView;
 import com.rengwuxian.materialedittext.MaterialEditText;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Locale;
 
 
@@ -28,34 +35,83 @@ public class MessageActivity extends ActionBarActivity {
 
     static final int PICK_CONTACT_REQUEST = 0;
 
-    // Widget GUI
-    MaterialEditText dateEntry;
-    MaterialEditText timeEntry;
-    MaterialEditText phoneEntry;
+    // Input Fields
+    MaterialEditText titleField;
+    MaterialEditText dateField;
+    MaterialEditText timeField;
+    MaterialEditText messageField;
+    MaterialAutoCompleteTextView phoneField;
 
     // Variable for storing current date and time
     private int mYear, mMonth, mDay, mHour, mMinute;
 
 
-    PhoneNumberFormattingTextWatcher phoneWatcher = new PhoneNumberFormattingTextWatcher();
+    PhoneNumberFormattingTextWatcher phoneFieldWatcher = new PhoneNumberFormattingTextWatcher();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_message);
 
-        phoneEntry = (MaterialEditText) findViewById(R.id.addEditPhone);
-        phoneEntry.addTextChangedListener(phoneWatcher);
+        titleField = (MaterialEditText) findViewById(R.id.message_title);
+        dateField = (MaterialEditText) findViewById(R.id.message_date);
+        timeField = (MaterialEditText) findViewById(R.id.message_time);
+        messageField = (MaterialEditText) findViewById(R.id.message_message);
+        phoneField = (MaterialAutoCompleteTextView) findViewById(R.id.message_phone);
 
+        // Format Phone Number on Text Change
+        phoneField.addTextChangedListener(phoneFieldWatcher);
+
+        // Observable ScrollView Handles FloatingActionButton visibility
         ObservableScrollView scrollView = (ObservableScrollView) findViewById(R.id.scrollview_message);
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab_message);
         fab.attachToScrollView(scrollView);
 
+        // Activity's main toolbar
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_message);
         setSupportActionBar(toolbar);
+
+        // Transparent toolbar styling 0-255
         toolbar.getBackground().setAlpha(200);
 
+        // Display native ActionBar back button
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        generateAutoCompleteContactList();
+    }
+
+    private void generateAutoCompleteContactList() {
+
+        List<HashMap<String,String>> contacts = new ArrayList<>();
+
+        // Contacts cursor
+        Cursor cursor = getContentResolver().query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI, null, null, null, null);
+
+        while (cursor.moveToNext()) {
+
+            HashMap<String, String> hMap = new HashMap<>();
+
+            hMap.put("image", cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.PHOTO_THUMBNAIL_URI)));
+            hMap.put("number", cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER)));
+            hMap.put("name", cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME)));
+
+            contacts.add(hMap);
+
+        }
+        cursor.close();
+
+
+        // Keys used in Hashmap
+        String[] from = { "name", "number"};
+
+        // Ids of views in listview_layout
+        int[] to = { R.id.name, R.id.number};
+
+        SimpleAdapter adapter = new SimpleAdapter(getBaseContext(), contacts, R.layout.contact_item, from, to);
+
+
+        MaterialAutoCompleteTextView textView = (MaterialAutoCompleteTextView) findViewById(R.id.message_phone);
+        textView.setAdapter(adapter);
     }
 
 
@@ -84,7 +140,7 @@ public class MessageActivity extends ActionBarActivity {
     public void onFabClickDone(View view){
         Intent returnIntent = new Intent();
         String[] result = new String[1];
-        MaterialEditText mTitle = (MaterialEditText) findViewById(R.id.edittext_title);
+        MaterialEditText mTitle = (MaterialEditText) findViewById(R.id.message_title);
         result[0] = mTitle.getText().toString();
         returnIntent.putExtra("result",result);
         setResult(RESULT_OK,returnIntent);
@@ -96,7 +152,7 @@ public class MessageActivity extends ActionBarActivity {
         mYear = c.get(Calendar.YEAR);
         mMonth = c.get(Calendar.MONTH);
         mDay = c.get(Calendar.DAY_OF_MONTH);
-        dateEntry = (MaterialEditText) findViewById(R.id.addEditDate);
+        dateField = (MaterialEditText) findViewById(R.id.message_date);
         DatePickerDialog dpd = new DatePickerDialog(this,
                 new DatePickerDialog.OnDateSetListener() {
 
@@ -104,7 +160,7 @@ public class MessageActivity extends ActionBarActivity {
                     public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
 
                         // Format Selected Date To Epoch
-                        SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
+                        SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss", Locale.getDefault());
                         long epoch = 0;
 
                         try {
@@ -118,7 +174,7 @@ public class MessageActivity extends ActionBarActivity {
                         Date date = new Date(epoch*1000);
 
                         // Set Human Readable Date to UI Field
-                        dateEntry.setText(sdf.format(date));
+                        dateField.setText(sdf.format(date));
 
                     }
                 }, mYear, mMonth, mDay);
@@ -126,7 +182,7 @@ public class MessageActivity extends ActionBarActivity {
     }
 
     public void onPickTime(View view){
-        timeEntry = (MaterialEditText) findViewById(R.id.addEditTime);
+        timeField = (MaterialEditText) findViewById(R.id.message_time);
         TimePickerDialog tpd = new TimePickerDialog(this,
                 new TimePickerDialog.OnTimeSetListener() {
 
@@ -149,7 +205,7 @@ public class MessageActivity extends ActionBarActivity {
 
 
                         // Set Human Readable Time to UI Field
-                        timeEntry.setText(hourOfDay + ":" + formatedMinute +" "+ amPm);
+                        timeField.setText(hourOfDay + ":" + formatedMinute + " " + amPm);
                     }
                 }, mHour, mMinute, false);
         tpd.show();
@@ -161,7 +217,7 @@ public class MessageActivity extends ActionBarActivity {
 
             if(resultCode == RESULT_OK){
                 String[] result = data.getStringArrayExtra("result");
-                MaterialEditText et = (MaterialEditText) findViewById(R.id.addEditPhone);
+                MaterialAutoCompleteTextView et = (MaterialAutoCompleteTextView) findViewById(R.id.message_phone);
                 et.setText(result[0]);
             }
 
@@ -169,11 +225,5 @@ public class MessageActivity extends ActionBarActivity {
                 //Write your code if there's no result
             }
         }
-    }
-
-    public void onPickContacts(View view){
-
-        Intent intent = new Intent(this, ContactsActivity.class);
-        startActivityForResult(intent, PICK_CONTACT_REQUEST);
     }
 }

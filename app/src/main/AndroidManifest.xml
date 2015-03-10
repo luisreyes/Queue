@@ -24,15 +24,6 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.luisreyes.apps.queue.MainActivity" />
         </activity>
-        <activity
-            android:name=".ContactsActivity"
-            android:label="@string/title_activity_contacts"
-            android:theme="@style/AppTheme.Toolbar.Contacts"
-            android:parentActivityName=".MessageActivity" >
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.luisreyes.apps.queue.MessageActivity" />
-        </activity>
     </application>
 
     <uses-permission android:name="android.permission.READ_CONTACTS" />

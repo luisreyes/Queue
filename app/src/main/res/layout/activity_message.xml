@@ -23,33 +23,51 @@
         app:theme="@style/AppTheme.Toolbar.Message"
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light"/>
 
-
+    <com.rengwuxian.materialedittext.MaterialEditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/message_title"
+        android:layout_below="@id/scene"
+        android:hint="@string/activity_add_edit_title"
+        android:inputType="textShortMessage|textCapWords"
+        android:singleLine="true"
+        android:textCursorDrawable="@drawable/text_cursor"
+        android:paddingRight="@dimen/activity_horizontal_margin"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:textSize="26sp"
+        app:baseColor="@color/primary_text"
+        app:primaryColor="@color/accent"
+        app:hideUnderline="false" />
 
     <com.melnykov.fab.ObservableScrollView
         android:id="@+id/scrollview_message"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/scene">
+        android:layout_below="@+id/message_title">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical">
 
-            <com.rengwuxian.materialedittext.MaterialEditText
+
+
+            <com.rengwuxian.materialedittext.MaterialAutoCompleteTextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/edittext_title"
-                android:hint="@string/activity_add_edit_title"
+                android:id="@+id/message_phone"
+                android:completionThreshold="1"
+                android:imeOptions="actionDone"
+                android:hint="@string/activity_add_edit_phone"
                 android:inputType="textShortMessage|textCapWords"
                 android:singleLine="true"
                 android:textCursorDrawable="@drawable/text_cursor"
                 android:paddingRight="@dimen/activity_horizontal_margin"
-                android:paddingLeft="@dimen/activity_horizontal_margin"
-                android:textSize="26sp"
+                android:paddingLeft="0dp"
                 app:baseColor="@color/primary_text"
+                app:iconLeft="@mipmap/ic_phone"
                 app:primaryColor="@color/accent"
-                app:floatingLabelText=""
+
                 app:hideUnderline="false" />
 
             <LinearLayout
@@ -67,13 +85,12 @@
                         android:layout_width="0dp"
                         android:layout_weight="1"
                         android:layout_height="wrap_content"
-                        android:id="@+id/addEditDate"
+                        android:id="@+id/message_date"
                         android:hint="@string/activity_add_edit_date"
                         android:inputType="date"
                         android:onClick="onPickDate"
                         app:iconLeft="@mipmap/ic_event"
                         app:baseColor="@color/primary_text"
-                        app:floatingLabel="highlight"
                         app:primaryColor="@color/accent"
 
                         android:enabled="true"
@@ -84,13 +101,12 @@
                         android:layout_width="0dp"
                         android:layout_weight="1"
                         android:layout_height="wrap_content"
-                        android:id="@+id/addEditTime"
+                        android:id="@+id/message_time"
                         android:hint="@string/activity_add_edit_time"
                         android:inputType="time"
                         android:onClick="onPickTime"
                         app:iconLeft="@mipmap/ic_query"
                         app:baseColor="@color/primary_text"
-                        app:floatingLabel="highlight"
                         app:primaryColor="@color/accent"
 
                         android:focusable="true"
@@ -98,62 +114,23 @@
                         android:enabled="true" />
                 </LinearLayout>
 
-                <FrameLayout
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
 
                     <com.rengwuxian.materialedittext.MaterialEditText
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:id="@+id/addEditPhone"
-                        android:hint="@string/activity_add_edit_phone"
-                        android:inputType="phone"
-                        android:textCursorDrawable="@drawable/text_cursor"
-                        app:iconLeft="@mipmap/ic_phone"
-                        app:baseColor="@color/primary_text"
-                        app:primaryColor="@color/accent"
-                        app:floatingLabel="highlight"/>
-
-                    <ImageButton
-                        android:layout_width="50dp"
-                        android:layout_height="50dp"
-                        android:padding="13dp"
-                        android:layout_gravity="end"
-                        android:src="@mipmap/ic_person_add"
-                        android:onClick="onPickContacts"
-                        android:id="@+id/addEditIconContacts"
-                        android:background="?attr/selectableItemBackgroundBorderless"
-                        android:scaleType="fitXY" />
-
-
-
-
-                </FrameLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:paddingLeft="@dimen/activity_horizontal_margin"
-                    android:paddingRight="0dp">
-
-                    <com.rengwuxian.materialedittext.MaterialEditText
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:minHeight="100dp"
-                        android:id="@+id/addEditMessage"
+                        android:id="@+id/message_message"
                         android:hint="@string/activity_add_edit_message"
                         android:inputType="textMultiLine"
                         android:gravity="top|start"
+
                         android:textCursorDrawable="@drawable/text_cursor"
                         app:maxCharacters="160"
-                        app:floatingLabel="highlight"
+                        app:iconLeft="@mipmap/ic_textsms"
                         app:baseColor="@color/primary_text"
                         app:primaryColor="@color/accent"
-                        app:hideUnderline="true"
 
                         />
-                </LinearLayout>
+            <!--</LinearLayout>-->
 
 
 
