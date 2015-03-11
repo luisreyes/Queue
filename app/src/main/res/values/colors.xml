@@ -14,7 +14,8 @@
     <color name="toolbar_secondary_text">@color/accent_dark</color>
 
     <color name="primary_text">@color/grey_900</color>
-    <color name="secondary_text">@color/grey_800</color>
+    <color name="secondary_text">@color/grey_700</color>
+    <color name="tertiary_text">@color/grey_500</color>
 
     <color name="black">@color/grey_black_1000</color>
     <color name="white">@color/grey_white_1000</color>

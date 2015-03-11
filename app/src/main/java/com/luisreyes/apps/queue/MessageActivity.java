@@ -13,9 +13,12 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.DatePicker;
+import android.widget.MultiAutoCompleteTextView;
 import android.widget.SimpleAdapter;
 import android.widget.TimePicker;
 
+import com.android.ex.chips.BaseRecipientAdapter;
+import com.android.ex.chips.RecipientEditTextView;
 import com.melnykov.fab.FloatingActionButton;
 import com.melnykov.fab.ObservableScrollView;
 import com.rengwuxian.materialedittext.MaterialAutoCompleteTextView;
@@ -80,7 +83,9 @@ public class MessageActivity extends ActionBarActivity {
         generateAutoCompleteContactList();
     }
 
+
     private void generateAutoCompleteContactList() {
+
 
         List<HashMap<String,String>> contacts = new ArrayList<>();
 
@@ -91,9 +96,23 @@ public class MessageActivity extends ActionBarActivity {
 
             HashMap<String, String> hMap = new HashMap<>();
 
-            hMap.put("image", cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.PHOTO_THUMBNAIL_URI)));
-            hMap.put("number", cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER)));
-            hMap.put("name", cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME)));
+            String image = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.PHOTO_THUMBNAIL_URI));
+            int type = cursor.getInt(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.TYPE));
+            String label = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.LABEL));
+            String name = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME));
+            String number = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
+            String phoneType = (String) ContactsContract.CommonDataKinds.Email.getTypeLabel(this.getBaseContext().getResources(), type, label);
+            //String typeLabel = cursor.getString(ContactsContract.CommonDataKinds.Phone.getTypeLabelResource(type));
+
+            if(image != null){
+                hMap.put("image", image);
+            }else{
+                hMap.put("image", Integer.toString(R.mipmap.ic_launcher));
+            }
+
+            hMap.put("type", phoneType);
+            hMap.put("number", number);
+            hMap.put("name", name);
 
             contacts.add(hMap);
 
@@ -102,10 +121,10 @@ public class MessageActivity extends ActionBarActivity {
 
 
         // Keys used in Hashmap
-        String[] from = { "name", "number"};
+        String[] from = { "image", "type", "number", "name"};
 
         // Ids of views in listview_layout
-        int[] to = { R.id.name, R.id.number};
+        int[] to = { R.id.image, R.id.type, R.id.number, R.id.name };
 
         SimpleAdapter adapter = new SimpleAdapter(getBaseContext(), contacts, R.layout.contact_item, from, to);
 

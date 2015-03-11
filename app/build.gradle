@@ -24,4 +24,5 @@ dependencies {
     compile 'com.android.support:appcompat-v7:21.0.3'
     compile 'com.melnykov:floatingactionbutton:1.2.0'
     compile 'com.rengwuxian.materialedittext:library:1.8.3'
+    compile 'com.klinkerapps:android-chips:1.0.0'
 }
